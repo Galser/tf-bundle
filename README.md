@@ -116,7 +116,7 @@ Output start
     ```
     Good enough.
 
-# Create demo code * package
+## Create demo code * package
 
 - Defining config for bundle , file `` :
     ```terraform
@@ -182,12 +182,76 @@ Output start
     ls terraform_*
     terraform_0.12.9-bundle2019101413_linux_amd64.zip    
     ```
-
+## Test 
+- ~There is pre-configure [Vagrantfile](Vagrantfile) in current repository. Run : 
+    ```vagrant up```
+- Observe output : 
+    ```
+    Bringing machine 'default' up with 'virtualbox' provider...
+    ==> default: Importing base box 'galser/ubuntu-1804-vbox'...
+    ==> default: Matching MAC address for NAT networking...
+    ==> default: Checking if box 'galser/ubuntu-1804-vbox' version '0.0.1' is up to date...
+    ==> default: Setting the name of the VM: tf-bundle_default_1571060493056_12036
+    ==> default: Clearing any previously set network interfaces...
+    ==> default: Preparing network interfaces based on configuration...
+        default: Adapter 1: nat
+    ==> default: Forwarding ports...
+        default: 22 (guest) => 2222 (host) (adapter 1)
+    ==> default: Booting VM...
+    ==> default: Waiting for machine to boot. This may take a few minutes...
+        default: SSH address: 127.0.0.1:2222
+        default: SSH username: vagrant
+        default: SSH auth method: private key
+        default: 
+        default: Vagrant insecure key detected. Vagrant will automatically replace
+        default: this with a newly generated keypair for better security.
+        default: 
+        default: Inserting generated public key within guest...
+        default: Removing insecure key from the guest if it's present...
+        default: Key inserted! Disconnecting and reconnecting using new SSH key...
+    ==> default: Machine booted and ready!
+    ==> default: Checking for guest additions in VM...
+    ==> default: Setting hostname...
+    ==> default: Mounting shared folders...
+        default: /vagrant => /Users/andrii/labs/skills/tf-bundle
+    ==> default: Running provisioner: file...
+        default: scripts => $HOME/scripts
+    ==> default: Running provisioner: file...
+        default: infra => $HOME/infra
+    ==> default: Running provisioner: shell...
+        default: Running: /var/folders/nw/hlt5_kpd5lzb78xrft48ynqm0000gp/T/vagrant-shell20191014-12933-7u02tt.sh
+        default: dpkg-preconfigure: unable to re-open stdin: No such file or directory
+        default: Selecting previously unselected package unzip.
+        default: (Reading database ... 
+        default: (Reading database ... 5%
+        ...
+        default: Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
+        default: Installed unzip
+        default: Installing Terraform from bundle
+        default: Terraform v0.12.9
+        default: Your version of Terraform is out of date! The latest version
+        default: is 0.12.10. You can update by downloading from www.terraform.io/downloads.html
+        default: Initializing the backend...
+        default: Initializing provider plugins...
+        default: Terraform has been successfully initialized!
+        default: 
+        default: You may now begin working with Terraform. Try running "terraform plan" to see
+        default: any changes that are required for your infrastructure. All Terraform commands
+        default: should now work.
+        default: If you ever set or change modules or backend configuration for Terraform,
+        default: rerun this command to reinitialize your working directory. If you forget, other
+        default: commands will detect it and remind you to do so if necessary.
+        default: 
+        default: Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+        default: 
+        default: .
+        default: ├── provider.aws ~> 2.0
+        default: └── provider.google 2.17    
+    ```
+    Observing last line  - we indeed have Terraform of the very specific version with our providers without any "full" install. just by unpacking the zip into specified folder on instance. 
 
 # Todo
 
-- [ ] create Vagrant environment
-- [ ] test bundle in Vagrant
 - [ ] update readme
 
 # Done
@@ -195,5 +259,7 @@ Output start
 - [x] build terraform-bundle
 - [x] creatre demo code
 - [x] create bundle
+- [x] create Vagrant environment
+- [x] test bundle in Vagrant
 
 # Run logs
