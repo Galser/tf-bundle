@@ -116,12 +116,76 @@ Output start
     ```
     Good enough.
 
+# Create demo code * package
+
+- Defining config for bundle , file `` :
+    ```terraform
+    terraform {
+    # Version of Terraform to include in the bundle. An exact version number
+    # is required.
+    version = "0.12.9"
+    }
+
+    # Define which provider plugins are to be included
+    providers {
+    # Include the newest "aws" provider version in the 1.0 series.
+    aws = ["~> 2.31"]
+
+    # Include both the newest 1.0 and 2.0 versions of the "google" provider.
+    # Each item in these lists allows a distinct version to be added. If the
+    # two expressions match different versions then _both_ are included in
+    # the bundle archive.
+    google = [ "~> 2.0", "2.17"]
+
+    # Include a custom plugin to the bundle. Will search for the plugin in the
+    # plugins directory, and package it with the bundle archive. Plugin must have
+    # a name of the form: terraform-provider-*, and must be build with the operating
+    # system and architecture that terraform enterprise is running, e.g. linux and amd64
+    terraform-provider-extip = ["0.1"]
+    }
+    ```
+- Adding custom plugin :
+    ```
+    mkdir ./plugins
+    ```
+    > Note - To include custom plugins in the bundle file, create a local directory "./plugins" and put all the plugins you want to include there. Optionally, you can use the -plugin-dir flag to specify a location where to find the plugins. To be recognized as a valid plugin, the file must have a name of the form terraform-provider-<NAME>_v<VERSION>. In addition, ensure that the plugin is built using the same operating system and architecture used for Terraform Enterprise. Typically this will be linux and amd64.
+    - For example for putting our `extip` plugin :
+        ```
+        ls -l plugins                                                            
+        total 55936
+        -rwxr-xr-x  1 andrii  staff  28638964 Oct 11 17:31 terraform-provider-extip_v0.1
+        ```
+        > Note - this will NOT WORK with Terraform v 0.12 - as extip plugin is for v. 0. 11
+- Package a bundle : 
+    ```
+    terraform-bundle package -os=linux -arch=amd64 terraform-bundle.hcl
+    ```
+    Output : 
+    ```
+    Fetching Terraform 0.12.9 core package...
+    Fetching 3rd party plugins in directory: ./plugins
+    plugin: extip (0.1)
+    - Resolving "aws" provider (~> 2.31)...
+    - Checking for provider plugin on https://releases.hashicorp.com...
+    - Downloading plugin for provider "aws" (hashicorp/aws) 2.32.0...
+    - Resolving "google" provider (~> 2.0)...
+    - Checking for provider plugin on https://releases.hashicorp.com...
+    - Downloading plugin for provider "google" (hashicorp/google) 2.17.0...
+    - Resolving "google" provider (2.17)...
+    - Checking for provider plugin on https://releases.hashicorp.com...
+    - Downloading plugin for provider "google" (hashicorp/google) 2.17.0...
+    Creating terraform_0.12.9-bundle2019101413_linux_amd64.zip ...
+    All done!    
+    ```
+- Bundle :
+    ```
+    ls terraform_*
+    terraform_0.12.9-bundle2019101413_linux_amd64.zip    
+    ```
+
 
 # Todo
 
-
-- [ ] creatre demo code
-- [ ] create bundle
 - [ ] create Vagrant environment
 - [ ] test bundle in Vagrant
 - [ ] update readme
@@ -129,5 +193,7 @@ Output start
 # Done
 - [x] setup TF build env
 - [x] build terraform-bundle
+- [x] creatre demo code
+- [x] create bundle
 
 # Run logs
