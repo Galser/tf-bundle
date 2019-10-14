@@ -249,10 +249,11 @@ Output start
         default: └── provider.google 2.17    
     ```
     Observing last line  - we indeed have Terraform of the very specific version with our providers without any "full" install. just by unpacking the zip into specified folder on instance. 
-
+- To completely destroy the VM and free up all your system resource (CPU, memory) you will need to give Vagrant instruction to do so - execute from command line ``vagrant destroy``. Next you should see the question on a new line :
+    ``` default: Are you sure you want to destroy the 'default' VM? [y/N]  ```
+    Answer 'y' from keyboard, and you are good to go
+    
 # Todo
-
-- [ ] update readme
 
 # Done
 - [x] setup TF build env
@@ -261,5 +262,7 @@ Output start
 - [x] create bundle
 - [x] create Vagrant environment
 - [x] test bundle in Vagrant
+- [x] update readme
+
 
 # Run logs
